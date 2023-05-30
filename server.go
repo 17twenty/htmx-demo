@@ -12,14 +12,22 @@ import (
 	"golang.org/x/exp/slog"
 )
 
+var (
+	logger *slog.Logger
+)
+
 func main() {
 	port := "8080"
+
+	if fromEnv := os.Getenv("PORT"); fromEnv != "" {
+		port = fromEnv
+	}
+
 	appEnv := "dev"
 
 	if fromEnv := os.Getenv("ENV"); fromEnv != "" {
 		appEnv = fromEnv
 	}
-
 	// Resources for logging
 	// https://betterstack.com/community/guides/logging/logging-in-go/
 
@@ -32,16 +40,20 @@ func main() {
 	if appEnv == "production" {
 		handler = slog.NewJSONHandler(os.Stdout, opts)
 	}
-	logger := slog.New(handler)
+	logger = slog.New(handler)
 	slog.SetDefault(logger) // Set the default logger >:)
 
-	if fromEnv := os.Getenv("PORT"); fromEnv != "" {
-		port = fromEnv
-	}
-
-	logger.Info("Starting server...", "SERVER", fmt.Sprintf("http://localhost:%s", port))
+	logger.Info("Starting server...", "server", fmt.Sprintf("http://localhost:%s", port))
 
 	r := chi.NewRouter()
+
+	// Set no caching
+	r.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(wr http.ResponseWriter, req *http.Request) {
+			wr.Header().Set("Cache-Control", "max-age=0, must-revalidate")
+			next.ServeHTTP(wr, req)
+		})
+	})
 
 	r.HandleFunc("/{username}", func(w http.ResponseWriter, r *http.Request) {
 		slog.Info("Called generic handler", "method", r.Method, "params", r.URL.Query())
@@ -68,6 +80,7 @@ func main() {
 
 	r.Get("/htmx/", func(w http.ResponseWriter, r *http.Request) {
 		slog.Error("Called without implementation", "method", r.Method)
+		partialEncoder(w, "results", nil)
 
 	})
 	r.Put("/htmx/", func(w http.ResponseWriter, r *http.Request) {
@@ -89,6 +102,7 @@ func main() {
 	})
 
 	// Apply auth middleware to only `GET /users/{id}`
+	// remember middleware goes BEFORE the route declarations
 	// router.Group(func(r chi.Router) {
 	// 	r.Use(AuthMiddleware)
 	// 	r.Get("/users/{id}")
