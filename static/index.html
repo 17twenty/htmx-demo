@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTMX Demo</title>
+    <script src="https://unpkg.com/htmx.org@1.9.2" integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h" crossorigin="anonymous"></script>
+</head>
+<body>
+    <p>
+        Testing
+    </p>
+
+    <p>
+
+        <div hx-post="/Mouse" hx-trigger="mouseenter">
+            [Here Mouse, Mouse!]
+        </div>
+        
+        <a href="https://htmx.org/docs/#triggers">Find Triggers here</a>
+    </p>
+<pre>
+    Attribute	Description
+    hx-get	Issues a GET request to the given URL
+    hx-post	Issues a POST request to the given URL
+    hx-put	Issues a PUT request to the given URL
+    hx-patch	Issues a PATCH request to the given URL
+    hx-delete	Issues a DELETE request to the given URL
+</pre>
+<hr />
+<br />
+<input type="text" name="query"
+    hx-get="/search"
+    hx-include="[name='query']"
+    hx-trigger="keyup changed delay:500ms"
+    hx-target="#search-results"
+    placeholder="Search..."
+>
+    <p>
+        Search Results:
+        <div id="search-results"></div>
+    </p>
+
+
+    <button hx-post="/htmx/" hx-swap="outerHTML" hx-target="#placeholder">Press me to POST</button>
+    <p>Post Reply:</p>
+    <code id="body">
+        <p id="placeholder">...</p>
+    </code>
+</body>
+</html>
