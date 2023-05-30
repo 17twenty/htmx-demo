@@ -1,6 +1,6 @@
 # HTMX Demo
 
-A simple demo using [HTMX](https://htmx.org/docs/), [Chi](github.com/go-chi/chi) and [Slog](golang.org/x/exp/slog).
+A simple demo using [HTMX](https://htmx.org/docs/), [Chi](https://github.com/go-chi/chi) and [Slog](https://golang.org/x/exp/slog).
 
 ## Getting Started
 
