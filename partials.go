@@ -27,6 +27,5 @@ func partialEncoder(wr io.Writer, partialName string, data any) error {
 		logger.Error("Failed to execute template", "template", tmpl.Name, "error", err)
 		return err
 	}
-
 	return nil
 }
