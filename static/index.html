@@ -8,13 +8,13 @@
     <script src="https://unpkg.com/htmx.org@1.9.2" integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h" crossorigin="anonymous"></script>
 </head>
 <body>
-    <p>
+    <p class="">
         Testing
     </p>
 
     <p>
 
-        <div hx-post="/Mouse" hx-trigger="mouseenter">
+        <div hx-post="/grab-it" hx-trigger="mouseenter once">
             [Here Mouse, Mouse!]
         </div>
         
@@ -43,7 +43,7 @@
     </p>
 
 
-    <button hx-post="/htmx/" hx-swap="outerHTML" hx-target="#placeholder">Press me to POST</button>
+    <button hx-post="/breakfast" hx-swap="outerHTML" hx-target="#placeholder">Press me to post ingredients</button>
     <p>Post Reply:</p>
     <code id="body">
         <p id="placeholder">...</p>

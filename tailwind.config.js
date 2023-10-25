@@ -1,0 +1,1 @@
+/* I exist to keep Tailwind CSS VSCode plugin happy */
